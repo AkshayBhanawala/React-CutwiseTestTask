@@ -1,0 +1,57 @@
+.diamond-rating {
+	display: flex;
+	flex-direction: row;
+	justify-content: stretch;
+	align-items: center;
+	column-gap: 7px;
+	margin-top: 20px;
+	height: var(--diamond-rating-size);
+}
+
+.diamond-rating .diamond-stars {
+	display: flex;
+	flex-direction: column;
+	width: min-content;
+	height: 100%;
+}
+
+.diamond-rating .diamond-stars .stars,
+.diamond-rating .diamond-stars .diamond {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: flex-end;
+}
+
+.diamond-rating .diamond-stars .stars {
+	height: 30%;
+}
+
+.diamond-rating .diamond-stars .stars > * {
+	display: inline-flex;
+}
+
+.diamond-rating .diamond-stars .stars > :not(.mini) {
+	height: 100%;
+	margin: 0px 0.5px;
+}
+
+.diamond-rating .diamond-stars .stars > .mini {
+	height: 80%;
+}
+
+.diamond-rating .diamond-stars .diamond {
+	margin-top: 3%;
+	height: 67%;
+}
+
+.diamond-rating .diamond-stars .stars svg,
+.diamond-rating .diamond-stars .diamond svg {
+	height: 100%;
+}
+
+.diamond-rating .cut-perf {
+	height: 100%;
+	font-size: calc(var(--diamond-font-size) + 2px);
+	font-weight: 500;
+}

@@ -1,0 +1,115 @@
+:root {
+	--diamond-size: 250px;
+	--diamond-font-size: 18px;
+	--diamond-font-size-mini: 14px;
+	--diamond-rating-size: 30px;
+	--diamond-price-letter-margin: 2px;
+}
+@media only screen and (min-width: 1200px)  {
+  :root {
+		--diamond-size: calc(250px + 1.25vw);
+		--diamond-font-size: calc(18px + 0.1vw);
+		--diamond-font-size-mini: calc(14px + 0.1vw);
+		--diamond-rating-size: calc(30px + 0.125vw);
+		--diamond-price-letter-margin: calc(2px + 0.05vw);
+	}
+}
+@media only screen and (min-width: 1920px)  {
+  :root {
+		--diamond-size: calc(250px + 2.5vw);
+		--diamond-font-size: calc(18px + 0.2vw);
+		--diamond-font-size-mini: calc(14px + 0.2vw);
+		--diamond-rating-size: calc(30px + 0.25vw);
+		--diamond-price-letter-margin: calc(2px + 0.09vw);
+	}
+}
+@media only screen and (min-width: 2560px)  {
+  :root {
+		--diamond-size: calc(250px + 5vw);
+		--diamond-font-size: calc(18px + 0.4vw);
+		--diamond-font-size-mini: calc(14px + 0.38vw);
+		--diamond-rating-size: calc(30px + 0.5vw);
+		/* --diamond-price-letter-margin: calc(2px + 0.1vw); */
+	}
+}
+
+.diamond-list {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+	align-items: flex-start;
+	flex-wrap: wrap;
+	row-gap: 60px;
+	column-gap: 80px;
+}
+
+.diamond-list .diamond-card {
+	display: flex;
+	flex-direction: column;
+}
+
+.diamond-list .diamond-card .image {
+	position: relative;
+	width: var(--diamond-size);
+	height: var(--diamond-size);
+	border-radius: 10px;
+	overflow: hidden;
+}
+
+.diamond-list .diamond-card .image .bg-loader {
+	z-index: -1;
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	background-color: rgba(0, 0, 0, 0.3);
+	padding: 25%;
+}
+
+.diamond-list .diamond-card .image iframe {
+	width: 100%;
+	height: 100%;
+}
+
+.diamond-list .diamond-card .detils {
+	display: flex;
+	flex-direction: row;
+	width: var(--diamond-size);
+	column-gap: 10px;
+	font-size: var(--diamond-font-size);
+}
+
+.diamond-list .diamond-card .detils .prices {
+	display: flex;
+	flex-direction: column;
+	white-space: nowrap;
+	text-align: right;
+}
+
+.diamond-list .diamond-card .detils .prices > div {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	align-items: center;
+	height: 50%;
+}
+
+.diamond-list .diamond-card .detils .prices .main,
+.diamond-list .diamond-card .detils .prices .main * {
+	font-weight: 600;
+	color: #f1b072;
+}
+
+.diamond-list .diamond-card .detils .prices .per-carat {
+	text-align: right;
+	font-size: var(--diamond-font-size-mini);
+	font-weight: 600;
+}
+
+.diamond-list .diamond-card .detils .prices .per-carat * {
+	font-weight: 600;
+}
+
+.diamond-list .diamond-card .detils .prices .per-carat > *:not(:first-child),
+.diamond-list .diamond-card .detils .prices .main > *:not(:first-child) {
+	margin-left: var(--diamond-price-letter-margin);
+}

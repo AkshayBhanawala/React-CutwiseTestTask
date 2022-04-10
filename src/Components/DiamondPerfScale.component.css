@@ -1,0 +1,60 @@
+.diamond-perf-scale {
+	flex-grow: 1;
+	position: relative;
+	height: calc(100% - 5px);
+	margin-top: 5px;
+	margin-left: 5px;
+	background-color: rgba(255,255,255,0.008);
+}
+
+.diamond-perf-scale .active-range {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	width: 0%;
+	background-color: rgba(184, 233, 148,0.5);
+}
+
+.diamond-perf-scale .x-axis {
+	position: relative;
+	display: flex;
+	flex-direction: row;
+	justify-content: stretch;
+	align-items: flex-end;
+	height: 100%;
+}
+
+.diamond-perf-scale .x-axis .labels,
+.diamond-perf-scale .x-axis .scale {
+	display: flex;
+	flex-direction: row;
+	justify-content: stretch;
+	height: 100%;
+	width: 100%;
+}
+
+.diamond-perf-scale .x-axis .labels {
+	align-items: center;
+}
+
+.diamond-perf-scale .x-axis .labels > .label {
+	width: 20%;
+	text-align: center;
+	font-size: calc(var(--diamond-font-size) - 40%);
+	font-weight: 400;
+	opacity: 0.2;
+}
+
+.diamond-perf-scale .x-axis .labels > .label.active {
+	opacity: 1;
+}
+
+.diamond-perf-scale .x-axis .scale {
+	position: absolute;
+	align-items: flex-end;
+}
+
+.diamond-perf-scale .x-axis .scale svg {
+	width: 100%;
+}

@@ -1,0 +1,36 @@
+.footer {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	margin-bottom: 10px;
+}
+.footer > div {
+	position: relative;
+	display: flex;
+	align-items: center;
+	width: 100%;
+	white-space: nowrap;
+	text-transform: uppercase;
+	opacity: 0.1;
+	letter-spacing: 1px;
+	font-size: 20px;
+	font-weight: 500;
+}
+.footer > div::before,
+.footer > div::after {
+	position: relative;
+	display: inline-block;
+	content: "";
+	background-color: #FFFFFF;
+	height: 2px;
+	width: 100%;
+	opacity: 0.5;
+}
+.footer > div::before {
+	margin-right: 10px;
+}
+.footer > div::after {
+	margin-left: 10px;
+}

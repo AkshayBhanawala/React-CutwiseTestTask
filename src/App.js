@@ -1,92 +1,81 @@
-import React, { Component } from 'react';
-import { Container } from 'reactstrap';
-import { Switch, Route, Redirect, withRouter } from "react-router-dom";
-import Config from './helpers/Config';
-import SearchIcon from './assets/Icons/Icon feather-search.png'
-import Recipes from './components/Recipes.component';
-import RecipeDetails from './components/RecipeDetails.component';
-import BGIMG_BottomLeft from './assets/Images/Illustration1.png';
-import BGIMG_TopRight from './assets/Images/Illustration2.png';
-import BGIMG_Pizza from './assets/Images/Illustration3.png';
-import BGIMG_Cheese from './assets/Images/Illustration4.png';
-import BGIMG_BabyTomatoe from './assets/Images/Illustration5.png';
-import SVGLoading from './components/_Custom/SVGLoading';
+import React, { useEffect, useState } from 'react';
+import { Switch, Route, withRouter } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import { startMainSpinner, stopMainSpinner } from './Store/Actions/Spinner.actions';
+import { setAccessToken } from './Store/Actions/AccessToken.actions';
+import getAccessToken from './Services/Auth.service';
+import getDiamonds from './Services/Diamond.service';
+import Diamonds from './Components/Diamonds.component';
+import Spinner from './Components/Spinner.component';
+import Header from './Components/Header.component';
+import Footer from './Components/Footer.component';
 import './App.css';
 
-class App extends Component {
-	static displayName = 'App';
-	_isMounted = false;
+function App() {
+	useEffect(() => { fetchDiamonds(); })
 
-	LoadingRef = React.createRef();
-	TB_SearchQRef = React.createRef();
+	const dispatch = useDispatch();
+	const accessToken = useSelector(state => state.accessToken);
+	const [diamonds, setDiamonds] = useState([]);
+	const [isLoading, setLoading] = useState(false);
+	const [isError, setError] = useState(false);
 
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			searchQ: "",
-			redirectToHome: false,
-			redirectToSearch: false
-		};
-		this.onKeyUp_TBSearchQ = this.onKeyUp_TBSearchQ.bind(this);
-	}
-
-	componentDidMount() {
-		this._isMounted = true;
-		if (Config.isDebug) console.log("App", "Mounted");
-		// Code to run when component is loaded
-		//this.props.history.push('/');
-	}
-
-	componentWillUnmount() {
-		this._isMounted = false;
-		if (Config.isDebug) console.log("App", "Unmounted");
-	}
-
-	onKeyUp_TBSearchQ(event) {
-		if (event.keyCode !== 13) {
-			return true;
+	const fetchDiamonds = async () => {
+		if (!accessToken && !isLoading && !diamonds.length) {
+			setLoading(true);
+			dispatch(startMainSpinner());
+			try {
+				const accessTokenResp = await getAccessToken();
+				dispatch(setAccessToken(accessTokenResp));
+				const limit = 10;
+				const offset = 0;
+				const diamondsResp = await getDiamonds(accessTokenResp, limit, offset);
+				setDiamonds(diamondsResp);
+			} catch (err) {
+				setError(true);
+				console.error(err);
+			}
+			setLoading(false);
+			dispatch(stopMainSpinner());
 		}
-		if (this.TB_SearchQRef.current.value) {
-			this.props.history.push(`/search/${this.TB_SearchQRef.current.value}`);
-		} else {
-			this.props.history.goBack();
-		}
-		return false;
-	}
+	};
 
-	render() {
-		if (Config.isDebug) console.log("App", "render", this.state);
+	return (
+		<>
+			<Spinner />
+			<Header />
+			<div className="content">
+				{ isError ? renderErrorMessage() : renderContent() }
+			</div>
+			<Footer />
+		</>
+	);
+
+	function renderContent() {
+		if (isLoading) {
+			return (<></>);
+		}
 		return (
-			<>
-				{(this.state.redirectToHome) ? <Redirect to={`/`} /> : <></>}
-				<div className="PageLoading show" ref={this.LoadingRef}><SVGLoading /></div>
-				<img alt="" className="BGIMG BottomLeft" src={BGIMG_BottomLeft} />
-				<img alt="" className="BGIMG TopRight" src={BGIMG_TopRight} />
-				<img alt="" className="BGIMG Pizza" src={BGIMG_Pizza} />
-				<img alt="" className="BGIMG Cheese" src={BGIMG_Cheese} />
-				<img alt="" className="BGIMG BabyTomatoe" src={BGIMG_BabyTomatoe} />
-				<Container className="MainContainer">
-					<div className="Content">
-						<div className="SearchBar" onSubmit={this.onSubmit_Search}>
-							<input id="tb_search" ref={this.TB_SearchQRef} onKeyUp={this.onKeyUp_TBSearchQ} type="text" className="tb_search" placeholder="Search your favourite recipe..." required={true} />
-							<label htmlFor="tb_search">
-								<img alt="Search Icon" src={SearchIcon} />
-							</label>
-						</div>
-						<div className="PageHolder">
-							<Switch>
-								<Route path={["/", "/search/:searchQ"]} exact component={(props) => <Recipes {...props} PageLoadingPlaceholder={this.LoadingRef} />} />
-								<Route path="/:id" exact component={(props) => <RecipeDetails {...props} PageLoadingPlaceholder={this.LoadingRef} />} />
-							</Switch>
-						</div>
-					</div>
-					<div className="Footer">
-						<div>YOUR FOOD TASTES YUMMY</div>
-					</div>
-				</Container>
-			</>
-		)
+			<Switch>
+				<Route path={["/"]} exact component={renderDiamonds} />
+			</Switch>
+		);
+	}
+
+	function renderErrorMessage() {
+		return (
+			<div className="error">
+				<h1>Ohh no!!!</h1>
+				<h3>Something went wrong, please try again later!</h3>
+			</div>
+		);
+	}
+
+	function renderDiamonds(props) {
+		if (accessToken && diamonds) {
+			return (<Diamonds {...props} diamonds={diamonds} />);
+		}
+		return (<></>)
 	}
 }
 
