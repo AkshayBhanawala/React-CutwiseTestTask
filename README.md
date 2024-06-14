@@ -1,4 +1,7 @@
-# [CutwiseTestTask [React]](https://th3az-react-cutwise-test-task.herokuapp.com)
+# [CutwiseTestTask [React]](https://akshaybhanawala.github.io/[Projects]/React-CutwiseTestTask)
+
+### Deployed URL
+https://akshaybhanawala.github.io/[Projects]/React-CutwiseTestTask
 
 ### Assessment from [Terra.do](https://terra.do), [octonus](https://octonus.com)
 #### Task 1. Create Listing of Diamonds Interface
